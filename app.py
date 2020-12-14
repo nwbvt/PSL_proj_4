@@ -89,7 +89,7 @@ def update_ratings(ratings):
 )
 def update_recs(ratings):
     if ratings:
-        recs = recommend_from_ratings(json.loads(ratings), user_ratings, movies, num_users=20, n=20)
+        recs = recommend_from_ratings(json.loads(ratings), user_ratings, movies, num_users=1000, n=20)
         return display_recs(recs)
 
 

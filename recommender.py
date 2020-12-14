@@ -19,10 +19,11 @@ def recommend_from_ratings(new_ratings, user_ratings=None, movies=None, num_user
     """
     user_ratings = user_ratings if user_ratings is not None else load_user_ratings()
     movies = movies if movies is not None else load_movies()
+    rated_movies = [int(m) for m in new_ratings.keys()]
+    relevant_ratings = user_ratings[rated_movies]
     mean_rating = sum(new_ratings.values())/len(new_ratings)
-    new_vector = [new_ratings[str(col)]-mean_rating if col in new_ratings else 0
-                  for col in user_ratings.columns]
-    similarities = cosine_similarity(user_ratings, [new_vector])
+    new_vector = [rating-mean_rating for rating in new_ratings.values()]
+    similarities = cosine_similarity(relevant_ratings, [new_vector])
     similar_users = [i for sim, i in sorted(zip(similarities[:,0], user_ratings.index), reverse=True)[:num_users]]
     movie_ratings = user_ratings.loc[similar_users].mean()
     ranked_movies = [i for s, i in sorted(zip(movie_ratings, movie_ratings.index), reverse=True)
