@@ -31,3 +31,7 @@ def load_genres(movies=None):
 def load_user_ratings(ratings=None):
     ratings = ratings if ratings is not None else load_ratings()
     return ratings.pivot(index='user', columns='movie', values='normalized').fillna(0)
+
+def load_movie_ratings(ratings=None):
+    ratings = ratings if ratings is not None else load_ratings()
+    return ratings.pivot(index='movie', columns='user', values='normalized').fillna(0)
